@@ -15,6 +15,7 @@ dotenv.config({
 
 const app = new Koa();
 const port = process.env.PORT || 3000;
+mongoose.set('useCreateIndex', true)
 mongoose.connect(process.env.DATABASE as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,7 +29,10 @@ mongoose.connect(process.env.DATABASE as string, {
 });
 
 app.use(cors());
-app.use(bodyParser());
+app.use(bodyParser({
+    jsonLimit: '10mb',
+    formLimit: "10mb"
+}));
 app.use(errorHandler);
 routeLoader(app);
 
